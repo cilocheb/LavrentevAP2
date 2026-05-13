@@ -302,117 +302,63 @@ React сравнивает старое и новое состояние по с
 -Компонент ProjectCard (app/components/ProjectCard.tsx) с отображением технологий в виде тегов.
 
 -Страница app/projects/page.tsx – список проектов с использованием компонента ProjectCard.
-#### Файл: `app/about/page.tsx`
 
-**Изменения:** заполнен список навыков (5 пунктов) и опыт работы (3 пункта).
-
+### Ниже приведён код ключевых файлов:
+**app/layout.tsx**
 ```tsx
-export default function AboutPage() {
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import Link from 'next/link'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'Мое портфолио',
+  description: 'Сайт-портфолио разработчика',
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Обо мне</h1>
-      
-      <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-        <h2 className="text-xl font-semibold mb-3 text-gray-600">Навыки</h2>
-        <ul className="list-disc pl-5 space-y-1">
-          <li className="text-base font-semibold mb-3 text-gray-500">HTML/CSS</li>
-          <li className="text-base font-semibold mb-3 text-gray-500">JavaScript</li>
-          <li className="text-base font-semibold mb-3 text-gray-500">Git</li>
-          <li className="text-base font-semibold mb-3 text-gray-500">React</li>
-          <li className="text-base font-semibold mb-3 text-gray-500">Next.js</li>
-        </ul>
-      </div>
-      
-      <div className="bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-3 text-gray-600">Опыт работы</h2>
-        <div className="space-y-4">
-          <p className="text-base font-semibold mb-3 text-gray-500">Microsoft</p>
-          <p className="text-base font-semibold mb-3 text-gray-500">Apple</p>
-          <p className="text-base font-semibold mb-3 text-gray-500">Android</p>
-        </div>
-      </div>
-    </div>
+    <html lang="ru">
+      <body className={inter.className}>
+        <header className="bg-gray-800 text-white p-4">
+          <nav className="container mx-auto">
+            <ul className="flex gap-6">
+              <li><Link href="/" className="hover:text-blue-300">Главная</Link></li>
+              <li><Link href="/about" className="hover:text-blue-300">Обо мне</Link></li>
+              <li><Link href="/blog" className="hover:text-blue-300">Блог</Link></li>
+              <li><Link href="/projects" className="hover:text-blue-300">Проекты</Link></li>
+            </ul>
+          </nav>
+        </header>
+        <main className="container mx-auto p-4">{children}</main>
+        <footer className="bg-gray-800 text-white p-4 text-center">
+          <p>© Мое портфолио. Все права защищены.</p>
+        </footer>
+      </body>
+    </html>
   )
 }
 ```
 
-#### Файл: `app/blog/data.ts`
-
-**Изменения:** добавлены две новые статьи (Django и Flask).
-
-```typescript
-export interface BlogPost {
-  id: number
-  title: string
-  slug: string
-  excerpt: string
-  content: string
-  date: string
-  author: string
-}
-
-export const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    title: 'Введение в Next.js',
-    slug: 'introduction-to-nextjs',
-    excerpt: 'Основы Next.js и преимущества серверного рендеринга',
-    content: 'Полный текст статьи о Next.js...',
-    date: '2026-01-15',
-    author: 'Иван Иванов'
-  },
-  // TODO: Добавьте еще минимум 2 статьи самостоятельно
-  {
-    id: 2,
-    title: 'Введение в Django',
-    slug: 'introduction-to-django',
-    excerpt: 'Основы Python и преимущества Django',
-    content: 'Полный текст статьи о Django...',
-    date: '2026-03-09',
-    author: 'Куйбышев Александр'
-  },
-  {
-    id: 3,
-    title: 'Введение в Flask',
-    slug: 'introduction-to-flask',
-    excerpt: 'Основы Python и преимущества Flask',
-    content: 'Полный текст статьи о Flask...',
-    date: '2026-03-09',
-    author: 'Куйбышев Александр'
-  } 
-]
-```
-
 #### Файл: `app/blog/[slug]/page.tsx`
 
-**Изменения:**
-- Исправлена типизация `params` как `Promise<{ slug: string }>` и добавлено `await params` (соответствует Next.js 15).
-- Добавлено отображение полного содержания статьи (`post.content`).
 
 ```tsx
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { blogPosts } from '../data'
 
-// Функция для генерации статических путей
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     slug: post.slug,
   }))
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>
-}) {
-  const { slug } = await params
-  
-  const post = blogPosts.find(p => p.slug === slug)
-  
-  if (!post) {
-    notFound()
-  }
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = blogPosts.find(p => p.slug === params.slug)
+  if (!post) notFound()
 
   return (
     <article className="max-w-3xl mx-auto">
@@ -423,19 +369,12 @@ export default async function BlogPostPage({
           <span>Автор: {post.author}</span>
         </div>
       </header>
-      
       <div className="prose max-w-none">
         <p className="text-lg mb-4">{post.excerpt}</p>
-        <div className="mt-6">
-          {post.content}
-        </div>
+        <div className="mt-4 whitespace-pre-line">{post.content}</div>
       </div>
-      
       <div className="mt-8 pt-4 border-t">
-        <Link 
-          href="/blog"
-          className="text-blue-600 hover:text-blue-800"
-        >
+        <Link href="/blog" className="text-blue-600 hover:text-blue-800">
           ← Вернуться к списку статей
         </Link>
       </div>
@@ -446,7 +385,6 @@ export default async function BlogPostPage({
 
 #### Файл: `app/components/ProjectCard.tsx`
 
-**Изменения:** добавлен рендер массива `technologies` в виде простых тегов.
 
 ```tsx
 interface ProjectCardProps {
@@ -456,34 +394,20 @@ interface ProjectCardProps {
   link?: string
 }
 
-export default function ProjectCard({ 
-  title, 
-  description, 
-  technologies,
-  link 
-}: ProjectCardProps) {
+export default function ProjectCard({ title, description, technologies, link }: ProjectCardProps) {
   return (
     <div className="border rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-gray-600 mb-4">{description}</p>
-      <div className="mb-4">
-        <span className="text-sm font-medium">Технологии: </span>
+      <div className="mb-4 flex flex-wrap gap-2">
         {technologies.map((tech, index) => (
-          <span
-            key={index}
-            className="p-1 text-gray-100 text-sm rounded-md"
-          >
+          <span key={index} className="bg-gray-200 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
             {tech}
           </span>
         ))}
       </div>
       {link && (
-        <a 
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block text-blue-600 hover:text-blue-800"
-        >
+        <a href={link} target="_blank" rel="noopener noreferrer" className="inline-block text-blue-600 hover:text-blue-800">
           Посмотреть проект →
         </a>
       )}
@@ -492,86 +416,21 @@ export default function ProjectCard({
 }
 ```
 
-#### Файл: `app/projects/page.tsx`
-
-**Изменения:**
-- Создан массив проектов (3 элемента) с типами.
-- Использован компонент `ProjectCard` для отображения каждого проекта.
-
-```tsx
-import ProjectCard from '../components/ProjectCard'
-
-// TODO: Создайте массив с данными о проектах
-interface Project {
-  title: string;
-  description: string;
-  technologies: string[];
-  link: string;
-};
-
-const projects: Project[] = [
-  {
-    title: 'Рекламаркет',
-    description: 'Полнофункциональный интернет-магазин',
-    technologies: ['Next.js', 'TypeScript', '1C:Bitrix', 'MySQL'],
-    link: 'https://stvprint.ru'
-  },
-  // TODO: Добавьте еще минимум 2 проекта
-  {
-    title: 'Рекламаркет-авто',
-    description: 'Полнофункциональный интернет-магазин со связью с менеджером',
-    technologies: ['Next.js', 'TypeScript', 'Bitrix24'],
-    link: 'https://auto.stvprint.ru'
-  },
-  {
-    title: 'Корпоративный сайт',
-    description: 'Корпоративный сайт Рекламаркет',
-    technologies: ['Next.js', 'TypeScript', 'Tailwind CSS', 'Prisma', 'PostgreSQL', 'WordPress'],
-    link: 'corp.stvprint.ru'
-  }
-]
-
-export default function ProjectsPage() {
-  return (
-    <div>
-      <h1 className="text-3xl font-bold mb-8">Мои проекты</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* TODO: Используйте компонент ProjectCard для отображения проектов */}
-        {projects.map((projects, index) => (
-          <ProjectCard
-            key = {index}
-            title = {projects.title}
-            description = {projects.description}
-            technologies = {projects.technologies}
-            link = {projects.link}
-            
-          />
-        ))
-        }
-        
-      </div>
-    </div>
-  )
-}
-```
 
 
 ### 3. Ответы на вопросы (Часть 2)
 
 #### **Что такое SSG (Static Site Generation) и как он реализован в вашем проекте?**
 
-**Static Site Generation (SSG)** — это метод предварительной генерации HTML-страниц на этапе сборки. В Next.js SSG реализуется с помощью функций `generateStaticParams` (для динамических маршрутов) и экспорта страниц по умолчанию без использования `getServerSideProps`. В проекте SSG используется для страниц блога: функция `generateStaticParams` в `app/blog/[slug]/page.tsx` возвращает все возможные значения `slug`, и Next.js при сборке (`npm run build`) генерирует статические HTML-файлы для каждой статьи. Это обеспечивает быструю загрузку и хорошую индексацию поисковиками.
+SSG — это подход, при котором HTML-страницы генерируются однократно на этапе сборки (build time). В Next.js для этого используется функция generateStaticParams в динамических маршрутах (например, [slug]). В моём проекте в файле app/blog/[slug]/page.tsx эта функция возвращает массив всех возможных slug’ов статей, и Next.js заранее создаёт для каждого из них готовую HTML-страницу. Это даёт высокую скорость загрузки и отличное SEO.
 
 #### **Как работает файловая маршрутизация в Next.js?**
 
-Next.js использует файловую систему для определения маршрутов. Каждый файл `.tsx` в папке `app` соответствует определённому пути:
-- `app/page.tsx` → `/`
-- `app/about/page.tsx` → `/about`
-- `app/blog/page.tsx` → `/blog`
-- `app/blog/[slug]/page.tsx` → `/blog/:slug` (динамический сегмент)
-
-Вложенные папки создают вложенные пути, а имена в квадратных скобках обозначают динамические параметры, доступные через `params`.
+Маршруты строятся на основе структуры папок внутри директории app. Каждая папка, содержащая файл page.tsx, становится маршрутом. Например:
+-app/page.tsx → /
+-app/about/page.tsx → /about
+-app/blog/[slug]/page.tsx → /blog/любой-слаг
+Имена папок, заключённые в квадратные скобки ([slug]), обозначают динамические сегменты.
 
 #### **Какие преимущества даёт использование `generateStaticParams`?**
 
@@ -583,8 +442,9 @@ Next.js использует файловую систему для опреде
 
 #### **В чём разница между `npm run dev` и `npm run build`?**
 
-- `npm run dev` запускает сервер разработки с горячей перезагрузкой (hot reload), оптимизированный для удобства разработки. Страницы генерируются на лету, код не минифицирован, ошибки отображаются подробно.
-- `npm run build` выполняет production-сборку проекта: оптимизирует код, генерирует статические страницы (SSG), минифицирует бандлы, создаёт готовый к деплою вывод в папке `.next`. После этого `npm run start` запускает production-сервер с собранными файлами.
+-npm run dev запускает среду разработки с горячей заменой модулей (HMR), быстрым обновлением и неоптимизированной сборкой. Предназначена для написания и отладки кода.
+
+-npm run build выполняет production-сборку: проверку типов TypeScript, минификацию, оптимизацию, статическую генерацию страниц. Результат готов к развёртыванию на сервере.
 
 ### 4. Критерии оценивания (Часть 2)
 
@@ -629,8 +489,7 @@ rm -rf .next
 npm run dev
 ```
 
-### 6. Выводы (Часть 2)
-В ходе лабораторной работы было создано многостраничное приложение на Next.js с использованием TypeScript. Освоены принципы файловой маршрутизации, статической генерации страниц (SSG) через `generateStaticParams`, работа с динамическими маршрутами. Все обязательные требования выполнены, дополнительные реализованы частично. Приложение успешно собирается и запускается, навигация работает корректно.
+### 6. Выводы 
+В ходе лабораторной работы были получены практические навыки создания React-приложений с использованием Vite и Tailwind CSS, освоены хуки useState, принципы неизменяемого состояния и типизация с TypeScript. Во второй части изучен Next.js: файловая маршрутизация, статическая генерация (SSG) с generateStaticParams, создание динамических маршрутов и компонентный подход. Оба проекта успешно собраны и проверены в браузере.
 
-## Общие выводы по лабораторной работе
-В рамках двух частей лабораторной работы были изучены и практически применены современные инструменты разработки фронтенд-приложений: создание клиентского React-приложения с помощью Vite и разработка многостраничного сайта с использованием Next.js (мета-фреймворка на основе React). Получены навыки работы с хуками, иммутабельным состоянием, TypeScript, Tailwind CSS, файловой маршрутизацией и статической генерацией страниц. Обе части успешно выполнены, приложения функционируют в соответствии с требованиями.
+
