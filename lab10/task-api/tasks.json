@@ -1,0 +1,47 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "uuid": "616a15f2-dc68-4115-b28c-25db9585f210",
+      "title": "??????? ??????",
+      "description": "????",
+      "category": "work",
+      "priority": 3,
+      "dueDate": null,
+      "completed": false,
+      "createdAt": "2026-05-13T14:32:05.867Z",
+      "updatedAt": "2026-05-13T14:32:05.867Z"
+    },
+    {
+      "id": 1,
+      "uuid": "b713c22c-1483-4ced-abf5-5fc8aad0eef6",
+      "title": "?????? ??????",
+      "description": "",
+      "category": "personal",
+      "priority": 5,
+      "dueDate": null,
+      "completed": false,
+      "createdAt": "2026-05-13T14:32:24.558Z",
+      "updatedAt": "2026-05-13T14:32:24.558Z"
+    },
+    {
+      "id": 1,
+      "uuid": "c2aa5172-fae2-4209-9e48-362463e523b2",
+      "title": "????????",
+      "description": "",
+      "category": "health",
+      "priority": 2,
+      "dueDate": null,
+      "completed": false,
+      "createdAt": "2026-05-13T14:32:25.317Z",
+      "updatedAt": "2026-05-13T14:32:25.317Z"
+    }
+  ],
+  "categories": [
+    "work",
+    "personal",
+    "shopping",
+    "health"
+  ],
+  "lastId": 0
+}
