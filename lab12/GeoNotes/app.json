@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "GeoNotes",
+    "slug": "GeoNotes",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.geonotes",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Приложению нужен доступ к фото для добавления к заметкам",
+        "NSCameraUsageDescription": "Приложению нужен доступ к камере для фото заметок",
+        "NSLocationWhenInUseUsageDescription": "Приложению нужно ваше местоположение для создания гео-заметок"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.yourcompany.geonotes",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
