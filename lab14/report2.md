@@ -195,17 +195,17 @@ db.orders.find({ user_id: 1 }).explain("executionStats");
 
 ## Результаты выполнения
 
-- Результат агрегации по категориям
+**Результат агрегации по категориям**
 - category	total_quantity	total_revenue	avg_price
 - Электроника	4	84000	28200.00
 - Канцелярия	10	1000	100.00
 - Книги	2	5000	2500.00
 
-Результат топ-3 пользователей
-full_name	total_spent
-Alice Smith	78000.00
-Bob Johnson	14000.00
-Carol White	2500.00
+**Результат топ-3 пользователей**
+- full_name	total_spent
+- Alice Smith	78000.00
+- Bob Johnson	14000.00
+- Carol White	2500.00
 
 ## Выводы
 В ходе выполнения лабораторной работы были получены практические навыки работы с документной СУБД MongoDB:
