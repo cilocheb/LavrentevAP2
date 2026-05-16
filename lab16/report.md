@@ -90,7 +90,7 @@ def validate_email(email: str) -> bool:
 ```bash
 Да работаю.
 ```
-https://github.com/cilocheb/LavrentevAP2/blob/15bbc5488cb1646f620fec46b3b2e1f7dc692c29/lab16/screens/photo_2_2026-05-16_17-47-17.jpg
+[https://github.com/cilocheb/LavrentevAP2/blob/15bbc5488cb1646f620fec46b3b2e1f7dc692c29/lab16/screens/photo_2_2026-05-16_17-47-17.jpg](https://raw.githubusercontent.com/cilocheb/LavrentevAP2/refs/heads/main/lab16/screens/photo_2_2026-05-16_17-47-17.jpg)
 Логи консюмера (пример после нескольких заказов)
 ```bash
 2026-05-16 16:07:48,490 - INFO - Received order aecb357f from customer Елена Козлова
